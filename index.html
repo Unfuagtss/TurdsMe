@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grow a Garden -- Pet Generator</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRT8TukfXAoDPv-pd0jBGxwqP_Vo0bbPceasg&s") no-repeat center center fixed; /* Replace with your own image link */
+      background-size: cover;
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      margin-top: 20px;
+      background: rgba(0, 0, 0, 0.5); /* semi-transparent box */
+      padding: 20px;
+      border-radius: 15px;
+      width: 80%;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 25px #000;
+    }
+
+    h1 {
+      color: #fff;
+      text-shadow: 0 0 15px #000, 0 0 20px #000;
+      font-size: 1rem;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 12px;
+      margin: 15px 0;
+      border: 2px solid #000;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      outline: none;
+      box-shadow: 0 0 10px #000;
+    }
+
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .item-card {
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid #000;
+      border-radius: 20px;
+      padding: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+      text-align: center;
+      box-shadow: 0 0 15px #000;
+    }
+
+    .item-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px #000, 0 0 40px #000;
+    }
+
+    .item-card.selected {
+      border: 2px solid #000;
+      box-shadow: 0 0 20px #fff;
+    }
+
+    .item-card img {
+      width: 90px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 20px;
+      border-radius: 100px; /* ensures transparent PNG corners */
+      background: transparent;
+    }
+
+    .item-card span {
+      display: block;
+      margin-top: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid #000;
+      color: #fff;
+      font-size: 1.3rem;
+      padding: 15px 30px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 20px;
+      width: 100%;
+      box-shadow: 0 0 15px #000;
+    }
+
+    button:hover {
+      background: #1E1D1DB3;
+      color: #000;
+      box-shadow: 0 0 30px #fff, 0 0 50px #fff;
+    }
+
+    /* Loading screen */
+    .loading-screen {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.95);
+      z-index: 1000;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    .spinner {
+      border: 6px solid white(0, 240, 255, 0.2);
+      border-top: 6px solid rgba(241, 251, 255, 1);
+      border-radius: 50%;
+      width: 70px;
+      height: 70px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .private-server-link {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .private-server-link a {
+      display: inline-block;
+      padding: 15px 30px;
+      border: 2px solid #fff;
+      color: #fff;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: 0.3s;
+      box-shadow: 0 0 15px #fff;
+    }
+
+    .private-server-link a:hover {
+      background: black;
+      color: white;
+      box-shadow: 0 0 25px #fff, 0 0 40px #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to Grow a Garden - - Pet Generator</h1>
+    <input type="text" id="username" placeholder="Enter Roblox Username">
+
+    <div class="items-grid">
+      <div class="item-card" data-item="Dragon Fly">
+        <img src="https://cdn.discordapp.com/attachments/1405207522377203863/1409502280520306831/Screenshot_20250825-173721.jpg?ex=68ad9cca&is=68ac4b4a&hm=ed7b250ce6a450b60d74d7db91d3ecb9206908cebb3e1cd61342c17759d4792d&" alt="Dragon Fly">
+        <span>🐲 Dragon Fly</span>
+      </div>
+      <div class="item-card" data-item="Kitsune">
+        <img src="https://cdn.discordapp.com/attachments/1405207522377203863/1409502033643307099/Screenshot_20250825-1737252.jpg?ex=68ad9c90&is=68ac4b10&hm=d4fd782a2998680d0ffa86a6bbef9ea91ba6fa1e086cc54e9c294946627a6128&" alt="Kitsune">
+        <span>🦊 Kitsune</span>
+      </div>
+      <div class="item-card" data-item="Mimic Octopus">
+        <img src="https://cdn.discordapp.com/attachments/1405207522377203863/1409499543640473710/Screenshot_20250825-1737424.jpg?ex=68ad9a3e&is=68ac48be&hm=dcd7983a3d599dbcc10c3382a87c84ec32fddee28aa3532d0d01002d08facf3f&" alt="Mimic Octopus">
+        <span>🐙 Mimic Octopus</span>
+      </div>
+      <div class="item-card" data-item="T-Rex">
+        <img src="https://cdn.discordapp.com/attachments/1405207522377203863/1409499544575541339/Screenshot_20250825-173725.jpg?ex=68ad9a3e&is=68ac48be&hm=e2ad28ea128ccfd32f8c52dbd883bebea820d3aa15eafeddba850e058b4d2f80&" alt="T-Rex">
+        <span>🦖 T-Rex</span>
+      </div>
+      <div class="item-card" data-item="Raccoon">
+        <img src="https://cdn.discordapp.com/attachments/1405207522377203863/1409499544097525851/Screenshot_20250825-173742.jpg?ex=68ad9a3e&is=68ac48be&hm=b39877505b2376c340554f637e99fef4c4895964d619bbd5b96c894c310b853b&" alt="Raccoon">
+        <span>🦝 Raccoon</span>
+      </div>
+      <div class="item-card" data-item="Butterfly">
+        <img src="https://cdn.discordapp.com/attachments/1405207522377203863/1409499543887679559/Screenshot_20250825-1737392.jpg?ex=68ad9a3e&is=68ac48be&hm=01a7a16f19fba47a560fd29d6bbdac450888fd8f73d12219baa68fb7a49eea33&" alt="ButterFly">
+        <span>🦋 Butterfly</span>
+      </div>
+    </div>
+
+    <button id="generateBtn">GENERATE</button>
+  </div>
+
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="spinner"></div>
+    <h2 id="loadingText">INITIALIZING...</h2>
+    <div class="private-server-link" id="privateServerLink">
+      <p>YOUR PET IS READY!</p>
+      <a href="https://www.roblox.com/games/126884695634066/Grow-a-Garden?privateServerLinkCode=44297265056918335205749836276236" target="_blank">JOIN PRIVATE SERVER</a>
+    </div>
+  </div>
+
+  <script>
+    const itemCards = document.querySelectorAll('.item-card');
+    let selectedItem = null;
+
+    itemCards.forEach(card => {
+      card.addEventListener('click', function() {
+        itemCards.forEach(c => c.classList.remove('selected'));
+        this.classList.add('selected');
+        selectedItem = this.getAttribute('data-item');
+        document.getElementById('generateBtn').textContent = `GENERATE ${selectedItem.toUpperCase()}`;
+      });
+    });
+
+    document.getElementById('generateBtn').addEventListener('click', function() {
+      const username = document.getElementById('username').value.trim();
+      if (!username) {
+        alert('Please enter a Roblox username!');
+        return;
+      }
+      if (!selectedItem) {
+        alert('Please select a pet!');
+        return;
+      }
+
+      const loadingScreen = document.getElementById('loadingScreen');
+      loadingScreen.style.display = 'flex';
+
+      this.disabled = true;
+
+      const loadingStages = [
+        { time: 2000, text: "PROCESSING REQUEST..." },
+        { time: 4000, text: "GENERATING PET DATA..." },
+        { time: 6000, text: "CONNECTING..." },
+        { time: 8000, text: "FINALIZING..." }
+      ];
+
+      loadingStages.forEach(stage => {
+        setTimeout(() => {
+          document.getElementById('loadingText').textContent = stage.text;
+        }, stage.time);
+      });
+
+      setTimeout(function() {
+        document.getElementById('privateServerLink').style.display = 'block';
+        document.getElementById('loadingText').textContent = "GENERATION COMPLETE!";
+        document.getElementById('generateBtn').disabled = false;
+      }, 10000);
+    });
+  </script>
+</body>
+</html>
